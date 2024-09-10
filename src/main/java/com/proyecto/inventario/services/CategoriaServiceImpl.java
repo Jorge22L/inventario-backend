@@ -18,9 +18,13 @@ import java.util.Optional;
 public class CategoriaServiceImpl implements ICategoriaService {
 
     @Autowired
-    private ICategoriaDao categoriaDao;
+    private final ICategoriaDao categoriaDao;
 
     Date fecha = new Date();
+
+    public CategoriaServiceImpl(ICategoriaDao categoriaDao) {
+        this.categoriaDao = categoriaDao;
+    }
 
     @Override
     @Transactional()
@@ -65,6 +69,36 @@ public class CategoriaServiceImpl implements ICategoriaService {
             response.setMetadata("Error al listar categorias", "-1", fecha.toString());
             e.getStackTrace();
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.OK);
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<CategoriaResponseRest> guardar(Categoria categoria) {
+        CategoriaResponseRest response = new CategoriaResponseRest();
+        List<Categoria> lista = new ArrayList<>();
+
+        try
+        {
+            Categoria categoriaSaved = categoriaDao.save(categoria);
+            if(categoriaSaved != null)
+            {
+                lista.add(categoriaSaved);
+                response.getCategoriaResponse().setCategoria(lista);
+                response.setMetadata("Categoría guardada", "200", fecha.toString());
+            }
+            else
+            {
+                response.setMetadata("No se pudo guardar categoría", "-1", fecha.toString());
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
+        }
+        catch (Exception e)
+        {
+            response.setMetadata("Error al guardar categoria", "-1", fecha.toString());
+            throw new RuntimeException("Error al guardar categoria", e);
         }
 
         return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.OK);

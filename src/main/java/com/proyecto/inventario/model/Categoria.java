@@ -1,16 +1,16 @@
 package com.proyecto.inventario.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Data;
 
 import java.io.Serializable;
 
 @Entity
-@Table(name = "categoria")
-public record Categoria(
-        @Id Long id,
-        String nombre,
-        String descripcion) implements Serializable {
-
+@Data
+public class Categoria{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long idcategoria;
+    private String nombre;
+    private String descripcion;
 }
