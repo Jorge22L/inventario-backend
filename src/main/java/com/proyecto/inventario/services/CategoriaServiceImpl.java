@@ -138,4 +138,31 @@ public class CategoriaServiceImpl implements ICategoriaService {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @Override
+    @Transactional
+    public ResponseEntity<CategoriaResponseRest> eliminar(Long id) {
+        CategoriaResponseRest response = new CategoriaResponseRest();
+        try
+        {
+            Optional<Categoria> encontrado = categoriaDao.findById(id);
+            if (encontrado.isPresent())
+            {
+                categoriaDao.deleteById(id);
+                response.setMetadata("Categoria eliminada", "ok", fecha.toString());
+            }
+            else {
+                response.setMetadata("Error al eliminar categoria. Categoria no existe", "-1", fecha.toString());
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+        }
+        catch (Exception e)
+        {
+            response.setMetadata("Error al eliminar categoria", "-1", fecha.toString());
+            e.getStackTrace();
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<CategoriaResponseRest>(response, HttpStatus.OK);
+    }
 }

@@ -2,6 +2,7 @@ package com.proyecto.inventario.services;
 
 import com.proyecto.inventario.model.Categoria;
 import com.proyecto.inventario.response.CategoriaResponseRest;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 
 public interface ICategoriaService {
@@ -9,5 +10,5 @@ public interface ICategoriaService {
     public ResponseEntity<CategoriaResponseRest> buscarPorId(Long id);
     public ResponseEntity<CategoriaResponseRest> guardar(Categoria categoria);
     public ResponseEntity<CategoriaResponseRest> actualizar(Categoria categoria, Long id);
-
+    public ResponseEntity<CategoriaResponseRest> eliminar(Long id);
 }

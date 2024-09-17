@@ -3,6 +3,7 @@ package com.proyecto.inventario.controller;
 import com.proyecto.inventario.model.Categoria;
 import com.proyecto.inventario.response.CategoriaResponseRest;
 import com.proyecto.inventario.services.ICategoriaService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +48,13 @@ public class CategoriaRestController {
     public ResponseEntity<CategoriaResponseRest> actualizar(@RequestBody Categoria categoria,@PathVariable Long id)
     {
         ResponseEntity<CategoriaResponseRest> response = categoriaService.actualizar(categoria,id);
+        return response;
+    }
+
+    @DeleteMapping("/categorias/{id}")
+    public ResponseEntity<CategoriaResponseRest> eliminar(@PathVariable Long id)
+    {
+        ResponseEntity<CategoriaResponseRest> response = categoriaService.eliminar(id);
         return response;
     }
 }
